@@ -20,6 +20,7 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -74,6 +75,10 @@ public class MarkdownList : IMarkdownNode
                     sb.AppendLine($"* {itemLines.First()}");
                     break;
                 }
+                default:
+                {
+                    throw new ArgumentOutOfRangeException(nameof(this.Type));
+                }
             }
 
             foreach (var line in itemLines.Skip(1))
@@ -89,6 +94,10 @@ public class MarkdownList : IMarkdownNode
                     {
                         sb.AppendLine($"{new string(' ', "*".Length)} {line}");
                         break;
+                    }
+                    default:
+                    {
+                        throw new ArgumentOutOfRangeException(nameof(this.Type));
                     }
                 }
             }
