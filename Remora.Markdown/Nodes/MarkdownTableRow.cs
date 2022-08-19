@@ -23,28 +23,27 @@
 using System.Collections.Generic;
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents a row in a table.
+/// </summary>
+[PublicAPI]
+public class MarkdownTableRow
 {
     /// <summary>
-    /// Represents a row in a table.
+    /// Gets a list of the cells in the row.
     /// </summary>
-    [PublicAPI]
-    public class MarkdownTableRow
-    {
-        /// <summary>
-        /// Gets a list of the cells in the row.
-        /// </summary>
-        public List<IMarkdownNode> Cells { get; } = new();
+    public List<IMarkdownNode> Cells { get; } = new();
 
-        /// <summary>
-        /// Appends a new cell to the row.
-        /// </summary>
-        /// <param name="cell">The cell to append.</param>
-        /// <returns>The row, with the cell appended.</returns>
-        public MarkdownTableRow AppendCell(IMarkdownNode cell)
-        {
-            this.Cells.Add(cell);
-            return this;
-        }
+    /// <summary>
+    /// Appends a new cell to the row.
+    /// </summary>
+    /// <param name="cell">The cell to append.</param>
+    /// <returns>The row, with the cell appended.</returns>
+    public MarkdownTableRow AppendCell(IMarkdownNode cell)
+    {
+        this.Cells.Add(cell);
+        return this;
     }
 }

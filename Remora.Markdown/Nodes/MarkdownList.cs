@@ -25,78 +25,77 @@ using System.Linq;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents a list of items.
+/// </summary>
+[PublicAPI]
+public class MarkdownList : IMarkdownNode
 {
     /// <summary>
-    /// Represents a list of items.
+    /// Gets the item in the list.
     /// </summary>
-    [PublicAPI]
-    public class MarkdownList : IMarkdownNode
+    public List<IMarkdownNode> Items { get; } = new();
+
+    /// <summary>
+    /// Gets or sets the type of list this is.
+    /// </summary>
+    public ListType Type { get; set; }
+
+    /// <summary>
+    /// Appends a new item to the list.
+    /// </summary>
+    /// <param name="item">The item to append.</param>
+    /// <returns>The list, with the item appended.</returns>
+    public MarkdownList AppendItem(IMarkdownNode item)
     {
-        /// <summary>
-        /// Gets the item in the list.
-        /// </summary>
-        public List<IMarkdownNode> Items { get; } = new();
+        this.Items.Add(item);
+        return this;
+    }
 
-        /// <summary>
-        /// Gets or sets the type of list this is.
-        /// </summary>
-        public ListType Type { get; set; }
-
-        /// <summary>
-        /// Appends a new item to the list.
-        /// </summary>
-        /// <param name="item">The item to append.</param>
-        /// <returns>The list, with the item appended.</returns>
-        public MarkdownList AppendItem(IMarkdownNode item)
+    /// <inheritdoc />
+    public string Compile()
+    {
+        var sb = new StringBuilder();
+        var itemNumber = 1;
+        foreach (var item in this.Items)
         {
-            this.Items.Add(item);
-            return this;
-        }
-
-        /// <inheritdoc />
-        public string Compile()
-        {
-            var sb = new StringBuilder();
-            var itemNumber = 1;
-            foreach (var item in this.Items)
+            var itemLines = item.Compile().Split('\n');
+            switch (this.Type)
             {
-                var itemLines = item.Compile().Split('\n');
+                case ListType.Numbered:
+                {
+                    sb.AppendLine($"{itemNumber}. {itemLines.First()}");
+                    break;
+                }
+                case ListType.Bullet:
+                {
+                    sb.AppendLine($"* {itemLines.First()}");
+                    break;
+                }
+            }
+
+            foreach (var line in itemLines.Skip(1))
+            {
                 switch (this.Type)
                 {
                     case ListType.Numbered:
                     {
-                        sb.AppendLine($"{itemNumber}. {itemLines.First()}");
+                        sb.AppendLine($"{new string(' ', $"{itemNumber}.".Length)} {line}");
                         break;
                     }
                     case ListType.Bullet:
                     {
-                        sb.AppendLine($"* {itemLines.First()}");
+                        sb.AppendLine($"{new string(' ', "*".Length)} {line}");
                         break;
                     }
                 }
-
-                foreach (var line in itemLines.Skip(1))
-                {
-                    switch (this.Type)
-                    {
-                        case ListType.Numbered:
-                        {
-                            sb.AppendLine($"{new string(' ', $"{itemNumber}.".Length)} {line}");
-                            break;
-                        }
-                        case ListType.Bullet:
-                        {
-                            sb.AppendLine($"{new string(' ', "*".Length)} {line}");
-                            break;
-                        }
-                    }
-                }
-
-                ++itemNumber;
             }
 
-            return sb.ToString();
+            ++itemNumber;
         }
+
+        return sb.ToString();
     }
 }

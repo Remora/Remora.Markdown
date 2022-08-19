@@ -22,44 +22,43 @@
 
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents a markdown code block with syntax highlighting.
+/// </summary>
+[PublicAPI]
+public class MarkdownCodeBlock : IMarkdownNode
 {
     /// <summary>
-    /// Represents a markdown code block with syntax highlighting.
+    /// Gets the code content.
     /// </summary>
-    [PublicAPI]
-    public class MarkdownCodeBlock : IMarkdownNode
+    public IMarkdownNode Content { get; }
+
+    /// <summary>
+    /// Gets the syntax highlighting to use.
+    /// </summary>
+    public string? Highlighting { get; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MarkdownCodeBlock"/> class.
+    /// </summary>
+    /// <param name="content">The contents of the block.</param>
+    /// <param name="highlighting">The highlighting to use, if any.</param>
+    public MarkdownCodeBlock(IMarkdownNode content, string? highlighting = null)
     {
-        /// <summary>
-        /// Gets the code content.
-        /// </summary>
-        public IMarkdownNode Content { get; }
+        this.Content = content;
+        this.Highlighting = highlighting;
+    }
 
-        /// <summary>
-        /// Gets the syntax highlighting to use.
-        /// </summary>
-        public string? Highlighting { get; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownCodeBlock"/> class.
-        /// </summary>
-        /// <param name="content">The contents of the block.</param>
-        /// <param name="highlighting">The highlighting to use, if any.</param>
-        public MarkdownCodeBlock(IMarkdownNode content, string? highlighting = null)
+    /// <inheritdoc />
+    public string Compile()
+    {
+        if (this.Highlighting is null)
         {
-            this.Content = content;
-            this.Highlighting = highlighting;
+            return $"```\n{this.Content.Compile()}\n```";
         }
 
-        /// <inheritdoc />
-        public string Compile()
-        {
-            if (this.Highlighting is null)
-            {
-                return $"```\n{this.Content.Compile()}\n```";
-            }
-
-            return $"```{this.Highlighting}\n{this.Content.Compile()}\n```";
-        }
+        return $"```{this.Highlighting}\n{this.Content.Compile()}\n```";
     }
 }

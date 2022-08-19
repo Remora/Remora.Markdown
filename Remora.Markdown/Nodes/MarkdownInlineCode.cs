@@ -22,32 +22,31 @@
 
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents inline code formatting.
+/// </summary>
+[PublicAPI]
+public class MarkdownInlineCode : IMarkdownNode
 {
     /// <summary>
-    /// Represents inline code formatting.
+    /// Gets or sets the inlined content.
     /// </summary>
-    [PublicAPI]
-    public class MarkdownInlineCode : IMarkdownNode
+    public IMarkdownNode Content { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MarkdownInlineCode"/> class.
+    /// </summary>
+    /// <param name="content">The text to inline.</param>
+    public MarkdownInlineCode(string content)
     {
-        /// <summary>
-        /// Gets or sets the inlined content.
-        /// </summary>
-        public IMarkdownNode Content { get; set; }
+        this.Content = new MarkdownText(content);
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownInlineCode"/> class.
-        /// </summary>
-        /// <param name="content">The text to inline.</param>
-        public MarkdownInlineCode(string content)
-        {
-            this.Content = new MarkdownText(content);
-        }
-
-        /// <inheritdoc />
-        public string Compile()
-        {
-            return $"`{this.Content.Compile()}`";
-        }
+    /// <inheritdoc />
+    public string Compile()
+    {
+        return $"`{this.Content.Compile()}`";
     }
 }

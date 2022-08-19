@@ -24,100 +24,99 @@ using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents a table of rows.
+/// </summary>
+[PublicAPI]
+public class MarkdownTable : IMarkdownNode
 {
     /// <summary>
-    /// Represents a table of rows.
+    /// Gets the list of rows in the table.
     /// </summary>
-    [PublicAPI]
-    public class MarkdownTable : IMarkdownNode
+    public List<MarkdownTableRow> Rows { get; } = new();
+
+    /// <summary>
+    /// Gets the list of columns in the table.
+    /// </summary>
+    public List<MarkdownTableColumn> Columns { get; } = new();
+
+    /// <summary>
+    /// Appends a column to the table.
+    /// </summary>
+    /// <param name="column">The column.</param>
+    /// <returns>The table, with the column appended.</returns>
+    public MarkdownTable AppendColumn(MarkdownTableColumn column)
     {
-        /// <summary>
-        /// Gets the list of rows in the table.
-        /// </summary>
-        public List<MarkdownTableRow> Rows { get; } = new();
+        this.Columns.Add(column);
+        return this;
+    }
 
-        /// <summary>
-        /// Gets the list of columns in the table.
-        /// </summary>
-        public List<MarkdownTableColumn> Columns { get; } = new();
+    /// <summary>
+    /// Appends a row to the table.
+    /// </summary>
+    /// <param name="row">The row.</param>
+    /// <returns>The table, with the row appended.</returns>
+    public MarkdownTable AppendRow(MarkdownTableRow row)
+    {
+        this.Rows.Add(row);
+        return this;
+    }
 
-        /// <summary>
-        /// Appends a column to the table.
-        /// </summary>
-        /// <param name="column">The column.</param>
-        /// <returns>The table, with the column appended.</returns>
-        public MarkdownTable AppendColumn(MarkdownTableColumn column)
+    /// <inheritdoc />
+    public string Compile()
+    {
+        var sb = new StringBuilder();
+        sb.Append("|");
+
+        // Build the header
+        foreach (var column in this.Columns)
         {
-            this.Columns.Add(column);
-            return this;
+            sb.Append($" {column.Title} |");
         }
 
-        /// <summary>
-        /// Appends a row to the table.
-        /// </summary>
-        /// <param name="row">The row.</param>
-        /// <returns>The table, with the row appended.</returns>
-        public MarkdownTable AppendRow(MarkdownTableRow row)
+        sb.AppendLine();
+        sb.Append("|");
+        foreach (var column in this.Columns)
         {
-            this.Rows.Add(row);
-            return this;
-        }
-
-        /// <inheritdoc />
-        public string Compile()
-        {
-            var sb = new StringBuilder();
-            sb.Append("|");
-
-            // Build the header
-            foreach (var column in this.Columns)
+            switch (column.Alignment)
             {
-                sb.Append($" {column.Title} |");
+                case ColumnAlignment.Left:
+                {
+                    sb.Append(" --- |");
+                    break;
+                }
+                case ColumnAlignment.Right:
+                {
+                    sb.Append(" ---: |");
+                    break;
+                }
+                case ColumnAlignment.Centered:
+                {
+                    sb.Append(" :--- |");
+                    break;
+                }
             }
+        }
 
+        foreach (var row in this.Rows)
+        {
             sb.AppendLine();
             sb.Append("|");
-            foreach (var column in this.Columns)
+            for (var i = 0; i < this.Columns.Count; ++i)
             {
-                switch (column.Alignment)
+                if (i < row.Cells.Count)
                 {
-                    case ColumnAlignment.Left:
-                    {
-                        sb.Append(" --- |");
-                        break;
-                    }
-                    case ColumnAlignment.Right:
-                    {
-                        sb.Append(" ---: |");
-                        break;
-                    }
-                    case ColumnAlignment.Centered:
-                    {
-                        sb.Append(" :--- |");
-                        break;
-                    }
+                    sb.Append($" {row.Cells[i].Compile()} |");
+                }
+                else
+                {
+                    sb.Append(" |");
                 }
             }
-
-            foreach (var row in this.Rows)
-            {
-                sb.AppendLine();
-                sb.Append("|");
-                for (var i = 0; i < this.Columns.Count; ++i)
-                {
-                    if (i < row.Cells.Count)
-                    {
-                        sb.Append($" {row.Cells[i].Compile()} |");
-                    }
-                    else
-                    {
-                        sb.Append(" |");
-                    }
-                }
-            }
-
-            return sb.ToString();
         }
+
+        return sb.ToString();
     }
 }

@@ -22,33 +22,32 @@
 
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents a markdown image.
+/// </summary>
+[PublicAPI]
+public class MarkdownImage : MarkdownLink
 {
     /// <summary>
-    /// Represents a markdown image.
+    /// Initializes a new instance of the <see cref="MarkdownImage"/> class.
     /// </summary>
-    [PublicAPI]
-    public class MarkdownImage : MarkdownLink
+    /// <param name="destination">The destination.</param>
+    /// <param name="text">The visible text.</param>
+    public MarkdownImage(string destination, string text)
+        : base(destination, text)
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownImage"/> class.
-        /// </summary>
-        /// <param name="destination">The destination.</param>
-        /// <param name="text">The visible text.</param>
-        public MarkdownImage(string destination, string text)
-            : base(destination, text)
+    }
+
+    /// <inheritdoc />
+    public override string Compile()
+    {
+        if (string.IsNullOrWhiteSpace(this.Tooltip))
         {
+            return $"![{this.Text}]({this.Destination})";
         }
 
-        /// <inheritdoc />
-        public override string Compile()
-        {
-            if (string.IsNullOrWhiteSpace(this.Tooltip))
-            {
-                return $"![{this.Text}]({this.Destination})";
-            }
-
-            return $"![{this.Text}]({this.Destination} \"{this.Tooltip}\")";
-        }
+        return $"![{this.Text}]({this.Destination} \"{this.Tooltip}\")";
     }
 }

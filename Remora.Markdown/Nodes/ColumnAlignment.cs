@@ -22,27 +22,26 @@
 
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents alignment of markdown columns.
+/// </summary>
+[PublicAPI]
+public enum ColumnAlignment
 {
     /// <summary>
-    /// Represents alignment of markdown columns.
+    /// Left-aligned.
     /// </summary>
-    [PublicAPI]
-    public enum ColumnAlignment
-    {
-        /// <summary>
-        /// Left-aligned.
-        /// </summary>
-        Left,
+    Left,
 
-        /// <summary>
-        /// Right-aligned.
-        /// </summary>
-        Right,
+    /// <summary>
+    /// Right-aligned.
+    /// </summary>
+    Right,
 
-        /// <summary>
-        /// Center aligned.
-        /// </summary>
-        Centered
-    }
+    /// <summary>
+    /// Center aligned.
+    /// </summary>
+    Centered
 }

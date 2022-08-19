@@ -23,38 +23,37 @@
 using System.Text;
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents a markdown block quote.
+/// </summary>
+[PublicAPI]
+public class MarkdownBlockQuote : IMarkdownNode
 {
     /// <summary>
-    /// Represents a markdown block quote.
+    /// Gets the quoted content.
     /// </summary>
-    [PublicAPI]
-    public class MarkdownBlockQuote : IMarkdownNode
+    public IMarkdownNode Content { get; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MarkdownBlockQuote"/> class.
+    /// </summary>
+    /// <param name="content">The contents.</param>
+    public MarkdownBlockQuote(IMarkdownNode content)
     {
-        /// <summary>
-        /// Gets the quoted content.
-        /// </summary>
-        public IMarkdownNode Content { get; }
+        this.Content = content;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownBlockQuote"/> class.
-        /// </summary>
-        /// <param name="content">The contents.</param>
-        public MarkdownBlockQuote(IMarkdownNode content)
+    /// <inheritdoc />
+    public string Compile()
+    {
+        var sb = new StringBuilder();
+        foreach (var line in this.Content.Compile().Split('\n'))
         {
-            this.Content = content;
+            sb.AppendLine($"> {line}");
         }
 
-        /// <inheritdoc />
-        public string Compile()
-        {
-            var sb = new StringBuilder();
-            foreach (var line in this.Content.Compile().Split('\n'))
-            {
-                sb.AppendLine($"> {line}");
-            }
-
-            return sb.ToString();
-        }
+        return sb.ToString();
     }
 }

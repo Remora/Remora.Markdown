@@ -22,54 +22,53 @@
 
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents text in a markdown document.
+/// </summary>
+[PublicAPI]
+public class MarkdownText : IMarkdownNode
 {
     /// <summary>
-    /// Represents text in a markdown document.
+    /// Gets the contents of the text.
     /// </summary>
-    [PublicAPI]
-    public class MarkdownText : IMarkdownNode
+    public string Content { get; }
+
+    /// <summary>
+    /// Gets or sets the type of emphasis placed on the text.
+    /// </summary>
+    public EmphasisType Emphasis { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MarkdownText"/> class.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    public MarkdownText(string text)
     {
-        /// <summary>
-        /// Gets the contents of the text.
-        /// </summary>
-        public string Content { get; }
+        this.Content = text;
+    }
 
-        /// <summary>
-        /// Gets or sets the type of emphasis placed on the text.
-        /// </summary>
-        public EmphasisType Emphasis { get; set; }
+    /// <inheritdoc />
+    public string Compile()
+    {
+        var content = this.Content;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownText"/> class.
-        /// </summary>
-        /// <param name="text">The text.</param>
-        public MarkdownText(string text)
+        if (this.Emphasis.HasFlag(EmphasisType.Italic))
         {
-            this.Content = text;
+            content = $"*{content}*";
         }
 
-        /// <inheritdoc />
-        public string Compile()
+        if (this.Emphasis.HasFlag(EmphasisType.Bold))
         {
-            var content = this.Content;
-
-            if (this.Emphasis.HasFlag(EmphasisType.Italic))
-            {
-                content = $"*{content}*";
-            }
-
-            if (this.Emphasis.HasFlag(EmphasisType.Bold))
-            {
-                content = $"**{content}**";
-            }
-
-            if (this.Emphasis.HasFlag(EmphasisType.Strikethrough))
-            {
-                content = $"~~{content}~~";
-            }
-
-            return content;
+            content = $"**{content}**";
         }
+
+        if (this.Emphasis.HasFlag(EmphasisType.Strikethrough))
+        {
+            content = $"~~{content}~~";
+        }
+
+        return content;
     }
 }

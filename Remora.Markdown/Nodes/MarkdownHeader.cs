@@ -22,63 +22,62 @@
 
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents a markdown header.
+/// </summary>
+[PublicAPI]
+public class MarkdownHeader : IMarkdownNode
 {
     /// <summary>
-    /// Represents a markdown header.
+    /// Gets or sets the level of the header.
     /// </summary>
-    [PublicAPI]
-    public class MarkdownHeader : IMarkdownNode
+    public int Level { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether the header should be underlined. Only affects levels 1 and 2.
+    /// </summary>
+    public bool Underline { get; set; }
+
+    /// <summary>
+    /// Gets or sets the title text of the header.
+    /// </summary>
+    public MarkdownText Title { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MarkdownHeader"/> class.
+    /// </summary>
+    /// <param name="title">The title.</param>
+    /// <param name="level">The level.</param>
+    /// <param name="underline">Whether or not the header should be underlined.</param>
+    public MarkdownHeader(string title, int level, bool underline = false)
     {
-        /// <summary>
-        /// Gets or sets the level of the header.
-        /// </summary>
-        public int Level { get; set; }
+        this.Title = new MarkdownText(title);
+        this.Level = level;
+        this.Underline = underline;
+    }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the header should be underlined. Only affects levels 1 and 2.
-        /// </summary>
-        public bool Underline { get; set; }
-
-        /// <summary>
-        /// Gets or sets the title text of the header.
-        /// </summary>
-        public MarkdownText Title { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownHeader"/> class.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        /// <param name="level">The level.</param>
-        /// <param name="underline">Whether or not the header should be underlined.</param>
-        public MarkdownHeader(string title, int level, bool underline = false)
+    /// <inheritdoc />
+    public string Compile()
+    {
+        if (!this.Underline || this.Level > 2)
         {
-            this.Title = new MarkdownText(title);
-            this.Level = level;
-            this.Underline = underline;
-        }
-
-        /// <inheritdoc />
-        public string Compile()
-        {
-            if (!this.Underline || this.Level > 2)
-            {
-                return $"{new string('#', this.Level)} {this.Title.Compile()}";
-            }
-
-            switch (this.Level)
-            {
-                case 1:
-                {
-                    return $"{this.Title.Compile()}\n{new string('=', this.Title.Compile().Length)}";
-                }
-                case 2:
-                {
-                    return $"{this.Title.Compile()}\n{new string('-', this.Title.Compile().Length)}";
-                }
-            }
-
             return $"{new string('#', this.Level)} {this.Title.Compile()}";
         }
+
+        switch (this.Level)
+        {
+            case 1:
+            {
+                return $"{this.Title.Compile()}\n{new string('=', this.Title.Compile().Length)}";
+            }
+            case 2:
+            {
+                return $"{this.Title.Compile()}\n{new string('-', this.Title.Compile().Length)}";
+            }
+        }
+
+        return $"{new string('#', this.Level)} {this.Title.Compile()}";
     }
 }

@@ -24,69 +24,68 @@ using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents a section of markdown content with a header.
+/// </summary>
+[PublicAPI]
+public class MarkdownSection : IMarkdownNode
 {
+    private readonly List<IMarkdownNode> _content = new();
+
     /// <summary>
-    /// Represents a section of markdown content with a header.
+    /// Gets or sets the header of the section.
     /// </summary>
-    [PublicAPI]
-    public class MarkdownSection : IMarkdownNode
+    public MarkdownHeader Header { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MarkdownSection"/> class.
+    /// </summary>
+    /// <param name="title">The title of the section.</param>
+    /// <param name="level">The level of the section header.</param>
+    public MarkdownSection(string title, int level = 1)
     {
-        private readonly List<IMarkdownNode> _content = new();
+        this.Header = new MarkdownHeader(title, level);
+    }
 
-        /// <summary>
-        /// Gets or sets the header of the section.
-        /// </summary>
-        public MarkdownHeader Header { get; set; }
+    /// <summary>
+    /// Appends a piece of content to the section.
+    /// </summary>
+    /// <param name="content">The content.</param>
+    /// <returns>The section, with the content appended.</returns>
+    public MarkdownSection AppendContent(IMarkdownNode content)
+    {
+        _content.Add(content);
+        return this;
+    }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownSection"/> class.
-        /// </summary>
-        /// <param name="title">The title of the section.</param>
-        /// <param name="level">The level of the section header.</param>
-        public MarkdownSection(string title, int level = 1)
+    /// <summary>
+    /// Appends a range of content to the section.
+    /// </summary>
+    /// <param name="content">The content.</param>
+    /// <returns>The section, with all the content appended.</returns>
+    public MarkdownSection AppendContentRange(IEnumerable<IMarkdownNode> content)
+    {
+        foreach (var node in content)
         {
-            this.Header = new MarkdownHeader(title, level);
+            AppendContent(node);
         }
 
-        /// <summary>
-        /// Appends a piece of content to the section.
-        /// </summary>
-        /// <param name="content">The content.</param>
-        /// <returns>The section, with the content appended.</returns>
-        public MarkdownSection AppendContent(IMarkdownNode content)
+        return this;
+    }
+
+    /// <inheritdoc />
+    public string Compile()
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine(this.Header.Compile());
+        foreach (var contentNode in _content)
         {
-            _content.Add(content);
-            return this;
+            sb.AppendLine(contentNode.Compile());
+            sb.AppendLine();
         }
 
-        /// <summary>
-        /// Appends a range of content to the section.
-        /// </summary>
-        /// <param name="content">The content.</param>
-        /// <returns>The section, with all the content appended.</returns>
-        public MarkdownSection AppendContentRange(IEnumerable<IMarkdownNode> content)
-        {
-            foreach (var node in content)
-            {
-                AppendContent(node);
-            }
-
-            return this;
-        }
-
-        /// <inheritdoc />
-        public string Compile()
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine(this.Header.Compile());
-            foreach (var contentNode in _content)
-            {
-                sb.AppendLine(contentNode.Compile());
-                sb.AppendLine();
-            }
-
-            return sb.ToString().TrimEnd();
-        }
+        return sb.ToString().TrimEnd();
     }
 }

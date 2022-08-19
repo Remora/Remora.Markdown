@@ -22,19 +22,18 @@
 
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents a node in a markdown document.
+/// </summary>
+[PublicAPI]
+public interface IMarkdownNode
 {
     /// <summary>
-    /// Represents a node in a markdown document.
+    /// Compiles the node into Markdown text.
     /// </summary>
-    [PublicAPI]
-    public interface IMarkdownNode
-    {
-        /// <summary>
-        /// Compiles the node into Markdown text.
-        /// </summary>
-        /// <returns>Markdown text.</returns>
-        [Pure]
-        string Compile();
-    }
+    /// <returns>Markdown text.</returns>
+    [Pure]
+    string Compile();
 }

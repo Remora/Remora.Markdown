@@ -22,49 +22,48 @@
 
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents a link.
+/// </summary>
+[PublicAPI]
+public class MarkdownLink : IMarkdownNode
 {
     /// <summary>
-    /// Represents a link.
+    /// Gets or sets the link destination.
     /// </summary>
-    [PublicAPI]
-    public class MarkdownLink : IMarkdownNode
+    public string Destination { get; set; }
+
+    /// <summary>
+    /// Gets or sets the visible text of the link.
+    /// </summary>
+    public string Text { get; set; }
+
+    /// <summary>
+    /// Gets or sets the link's hover tooltip.
+    /// </summary>
+    public string? Tooltip { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MarkdownLink"/> class.
+    /// </summary>
+    /// <param name="destination">The link destination.</param>
+    /// <param name="text">The link text.</param>
+    public MarkdownLink(string destination, string text)
     {
-        /// <summary>
-        /// Gets or sets the link destination.
-        /// </summary>
-        public string Destination { get; set; }
+        this.Destination = destination;
+        this.Text = text;
+    }
 
-        /// <summary>
-        /// Gets or sets the visible text of the link.
-        /// </summary>
-        public string Text { get; set; }
-
-        /// <summary>
-        /// Gets or sets the link's hover tooltip.
-        /// </summary>
-        public string? Tooltip { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownLink"/> class.
-        /// </summary>
-        /// <param name="destination">The link destination.</param>
-        /// <param name="text">The link text.</param>
-        public MarkdownLink(string destination, string text)
+    /// <inheritdoc />
+    public virtual string Compile()
+    {
+        if (string.IsNullOrWhiteSpace(this.Tooltip))
         {
-            this.Destination = destination;
-            this.Text = text;
+            return $"[{this.Text}]({this.Destination})";
         }
 
-        /// <inheritdoc />
-        public virtual string Compile()
-        {
-            if (string.IsNullOrWhiteSpace(this.Tooltip))
-            {
-                return $"[{this.Text}]({this.Destination})";
-            }
-
-            return $"[{this.Text}]({this.Destination} \"{this.Tooltip}\")";
-        }
+        return $"[{this.Text}]({this.Destination} \"{this.Tooltip}\")";
     }
 }

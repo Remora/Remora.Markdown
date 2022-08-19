@@ -23,32 +23,31 @@
 using System;
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents emphasis types for markdown text.
+/// </summary>
+[PublicAPI, Flags]
+public enum EmphasisType
 {
     /// <summary>
-    /// Represents emphasis types for markdown text.
+    /// No emphasis.
     /// </summary>
-    [PublicAPI, Flags]
-    public enum EmphasisType
-    {
-        /// <summary>
-        /// No emphasis.
-        /// </summary>
-        None = 0x0,
+    None = 0x0,
 
-        /// <summary>
-        /// Italic (cursive) text.
-        /// </summary>
-        Italic = 0x1,
+    /// <summary>
+    /// Italic (cursive) text.
+    /// </summary>
+    Italic = 0x1,
 
-        /// <summary>
-        /// Bold text.
-        /// </summary>
-        Bold = 0x2,
+    /// <summary>
+    /// Bold text.
+    /// </summary>
+    Bold = 0x2,
 
-        /// <summary>
-        /// Struck text.
-        /// </summary>
-        Strikethrough = 0x4
-    }
+    /// <summary>
+    /// Struck text.
+    /// </summary>
+    Strikethrough = 0x4
 }

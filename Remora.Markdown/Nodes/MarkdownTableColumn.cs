@@ -22,31 +22,30 @@
 
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents a column in a table.
+/// </summary>
+[PublicAPI]
+public class MarkdownTableColumn
 {
     /// <summary>
-    /// Represents a column in a table.
+    /// Gets or sets the title of the column.
     /// </summary>
-    [PublicAPI]
-    public class MarkdownTableColumn
+    public string Title { get; set; }
+
+    /// <summary>
+    /// Gets or sets the alignment of the column.
+    /// </summary>
+    public ColumnAlignment Alignment { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MarkdownTableColumn"/> class.
+    /// </summary>
+    /// <param name="title">The title.</param>
+    public MarkdownTableColumn(string title)
     {
-        /// <summary>
-        /// Gets or sets the title of the column.
-        /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// Gets or sets the alignment of the column.
-        /// </summary>
-        public ColumnAlignment Alignment { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownTableColumn"/> class.
-        /// </summary>
-        /// <param name="title">The title.</param>
-        public MarkdownTableColumn(string title)
-        {
-            this.Title = title;
-        }
+        this.Title = title;
     }
 }

@@ -24,74 +24,73 @@ using System.Collections.Generic;
 using System.Text;
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents a page of markdown content.
+/// </summary>
+[PublicAPI]
+public class MarkdownPage
 {
+    private readonly List<MarkdownSection> _sections = new();
+
     /// <summary>
-    /// Represents a page of markdown content.
+    /// Gets or sets the name of the page.
     /// </summary>
-    [PublicAPI]
-    public class MarkdownPage
+    public string Name { get; set; }
+
+    /// <summary>
+    /// Gets or sets the title of the page.
+    /// </summary>
+    public string Title { get; set; }
+
+    /// <summary>
+    /// Gets or sets the page footer.
+    /// </summary>
+    public string? Footer { get; set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MarkdownPage"/> class.
+    /// </summary>
+    /// <param name="name">The name of the page.</param>
+    /// <param name="title">The title of the page.</param>
+    public MarkdownPage(string name, string title)
     {
-        private readonly List<MarkdownSection> _sections = new();
+        this.Name = name;
+        this.Title = title;
+    }
 
-        /// <summary>
-        /// Gets or sets the name of the page.
-        /// </summary>
-        public string Name { get; set; }
+    /// <summary>
+    /// Appends a section to the page.
+    /// </summary>
+    /// <param name="section">The section.</param>
+    /// <returns>The page, with the section appended.</returns>
+    public MarkdownPage AppendSection(MarkdownSection section)
+    {
+        _sections.Add(section);
+        return this;
+    }
 
-        /// <summary>
-        /// Gets or sets the title of the page.
-        /// </summary>
-        public string Title { get; set; }
+    /// <summary>
+    /// Compiles the contents of the page into Markdown text.
+    /// </summary>
+    /// <returns>The page, as markdown text.</returns>
+    public string Compile()
+    {
+        var sb = new StringBuilder();
 
-        /// <summary>
-        /// Gets or sets the page footer.
-        /// </summary>
-        public string? Footer { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MarkdownPage"/> class.
-        /// </summary>
-        /// <param name="name">The name of the page.</param>
-        /// <param name="title">The title of the page.</param>
-        public MarkdownPage(string name, string title)
+        sb.AppendLine(new MarkdownHeader(this.Title, 1, true).Compile());
+        foreach (var section in _sections)
         {
-            this.Name = name;
-            this.Title = title;
+            sb.AppendLine(section.Compile());
+            sb.AppendLine();
         }
 
-        /// <summary>
-        /// Appends a section to the page.
-        /// </summary>
-        /// <param name="section">The section.</param>
-        /// <returns>The page, with the section appended.</returns>
-        public MarkdownPage AppendSection(MarkdownSection section)
+        if (!string.IsNullOrWhiteSpace(this.Footer))
         {
-            _sections.Add(section);
-            return this;
+            sb.AppendLine(this.Footer);
         }
 
-        /// <summary>
-        /// Compiles the contents of the page into Markdown text.
-        /// </summary>
-        /// <returns>The page, as markdown text.</returns>
-        public string Compile()
-        {
-            var sb = new StringBuilder();
-
-            sb.AppendLine(new MarkdownHeader(this.Title, 1, true).Compile());
-            foreach (var section in _sections)
-            {
-                sb.AppendLine(section.Compile());
-                sb.AppendLine();
-            }
-
-            if (!string.IsNullOrWhiteSpace(this.Footer))
-            {
-                sb.AppendLine(this.Footer);
-            }
-
-            return sb.ToString().TrimEnd();
-        }
+        return sb.ToString().TrimEnd();
     }
 }

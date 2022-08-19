@@ -22,18 +22,17 @@
 
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents a horizontal rule in.
+/// </summary>
+[PublicAPI]
+public class MarkdownHorizontalRule : IMarkdownNode
 {
-    /// <summary>
-    /// Represents a horizontal rule in.
-    /// </summary>
-    [PublicAPI]
-    public class MarkdownHorizontalRule : IMarkdownNode
+    /// <inheritdoc />
+    public string Compile()
     {
-        /// <inheritdoc />
-        public string Compile()
-        {
-            return "---";
-        }
+        return "---";
     }
 }

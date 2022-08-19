@@ -22,22 +22,21 @@
 
 using JetBrains.Annotations;
 
-namespace Remora.Markdown
+namespace Remora.Markdown;
+
+/// <summary>
+/// Represents markdown list types.
+/// </summary>
+[PublicAPI]
+public enum ListType
 {
     /// <summary>
-    /// Represents markdown list types.
+    /// A list with numbered elements.
     /// </summary>
-    [PublicAPI]
-    public enum ListType
-    {
-        /// <summary>
-        /// A list with numbered elements.
-        /// </summary>
-        Numbered,
+    Numbered,
 
-        /// <summary>
-        /// A bullet point list.
-        /// </summary>
-        Bullet
-    }
+    /// <summary>
+    /// A bullet point list.
+    /// </summary>
+    Bullet
 }
