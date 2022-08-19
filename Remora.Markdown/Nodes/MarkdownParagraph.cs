@@ -35,7 +35,7 @@ namespace Remora.Markdown
         /// <summary>
         /// Gets a list of the text components in the paragraph.
         /// </summary>
-        public List<MarkdownText> Components { get; } = new List<MarkdownText>();
+        public List<MarkdownText> Components { get; } = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MarkdownParagraph"/> class.

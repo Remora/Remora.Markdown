@@ -35,12 +35,12 @@ namespace Remora.Markdown
         /// <summary>
         /// Gets the list of rows in the table.
         /// </summary>
-        public List<MarkdownTableRow> Rows { get; } = new List<MarkdownTableRow>();
+        public List<MarkdownTableRow> Rows { get; } = new();
 
         /// <summary>
         /// Gets the list of columns in the table.
         /// </summary>
-        public List<MarkdownTableColumn> Columns { get; } = new List<MarkdownTableColumn>();
+        public List<MarkdownTableColumn> Columns { get; } = new();
 
         /// <summary>
         /// Appends a column to the table.

@@ -34,7 +34,7 @@ namespace Remora.Markdown
         /// <summary>
         /// Gets a list of the cells in the row.
         /// </summary>
-        public List<IMarkdownNode> Cells { get; } = new List<IMarkdownNode>();
+        public List<IMarkdownNode> Cells { get; } = new();
 
         /// <summary>
         /// Appends a new cell to the row.

@@ -36,7 +36,7 @@ namespace Remora.Markdown
         /// <summary>
         /// Gets the item in the list.
         /// </summary>
-        public List<IMarkdownNode> Items { get; } = new List<IMarkdownNode>();
+        public List<IMarkdownNode> Items { get; } = new();
 
         /// <summary>
         /// Gets or sets the type of list this is.

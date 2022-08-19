@@ -32,7 +32,7 @@ namespace Remora.Markdown
     [PublicAPI]
     public class MarkdownSection : IMarkdownNode
     {
-        private readonly List<IMarkdownNode> _content = new List<IMarkdownNode>();
+        private readonly List<IMarkdownNode> _content = new();
 
         /// <summary>
         /// Gets or sets the header of the section.

@@ -32,7 +32,7 @@ namespace Remora.Markdown
     [PublicAPI]
     public class MarkdownPage
     {
-        private readonly List<MarkdownSection> _sections = new List<MarkdownSection>();
+        private readonly List<MarkdownSection> _sections = new();
 
         /// <summary>
         /// Gets or sets the name of the page.
