@@ -66,18 +66,11 @@ public class MarkdownHeader : IMarkdownNode
             return $"{new string('#', this.Level)} {this.Title.Compile()}";
         }
 
-        switch (this.Level)
+        return this.Level switch
         {
-            case 1:
-            {
-                return $"{this.Title.Compile()}\n{new string('=', this.Title.Compile().Length)}";
-            }
-            case 2:
-            {
-                return $"{this.Title.Compile()}\n{new string('-', this.Title.Compile().Length)}";
-            }
-        }
-
-        return $"{new string('#', this.Level)} {this.Title.Compile()}";
+            1 => $"{this.Title.Compile()}\n{new string('=', this.Title.Compile().Length)}",
+            2 => $"{this.Title.Compile()}\n{new string('-', this.Title.Compile().Length)}",
+            _ => $"{new string('#', this.Level)} {this.Title.Compile()}"
+        };
     }
 }
