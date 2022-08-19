@@ -68,7 +68,7 @@ public class MarkdownTable : IMarkdownNode
     public string Compile()
     {
         var sb = new StringBuilder();
-        sb.Append("|");
+        sb.Append('|');
 
         // Build the header
         foreach (var column in this.Columns)
@@ -77,7 +77,7 @@ public class MarkdownTable : IMarkdownNode
         }
 
         sb.AppendLine();
-        sb.Append("|");
+        sb.Append('|');
         foreach (var column in this.Columns)
         {
             switch (column.Alignment)
@@ -103,7 +103,7 @@ public class MarkdownTable : IMarkdownNode
         foreach (var row in this.Rows)
         {
             sb.AppendLine();
-            sb.Append("|");
+            sb.Append('|');
             for (var i = 0; i < this.Columns.Count; ++i)
             {
                 if (i < row.Cells.Count)
