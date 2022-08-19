@@ -1,0 +1,15 @@
+<Project>
+    <PropertyGroup>
+        <LegalAuthor>Jarl Gullberg</LegalAuthor>
+        <LegalEmail>jarl.gullberg@gmail.com</LegalEmail>
+    </PropertyGroup>
+
+    <!-- NuGet-related properties -->
+    <PropertyGroup>
+        <RepositoryUrl>https://github.com/Remora/Remora.Markdown</RepositoryUrl>
+        <RepositoryBranch>main</RepositoryBranch>
+
+        <PackageOutputPath>$(MSBuildThisFileDirectory)nuget</PackageOutputPath>
+        <PackageProjectUrl>https://github.com/Remora/Remora.Markdown</PackageProjectUrl>
+    </PropertyGroup>
+</Project>
