@@ -43,11 +43,8 @@ public class MarkdownImage : MarkdownLink
     /// <inheritdoc />
     public override string Compile()
     {
-        if (string.IsNullOrWhiteSpace(this.Tooltip))
-        {
-            return $"![{this.Text}]({this.Destination})";
-        }
-
-        return $"![{this.Text}]({this.Destination} \"{this.Tooltip}\")";
+        return string.IsNullOrWhiteSpace(this.Tooltip)
+            ? $"![{this.Text}]({this.Destination})"
+            : $"![{this.Text}]({this.Destination} \"{this.Tooltip}\")";
     }
 }

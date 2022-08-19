@@ -54,11 +54,8 @@ public class MarkdownCodeBlock : IMarkdownNode
     /// <inheritdoc />
     public string Compile()
     {
-        if (this.Highlighting is null)
-        {
-            return $"```\n{this.Content.Compile()}\n```";
-        }
-
-        return $"```{this.Highlighting}\n{this.Content.Compile()}\n```";
+        return this.Highlighting is null
+            ? $"```\n{this.Content.Compile()}\n```"
+            : $"```{this.Highlighting}\n{this.Content.Compile()}\n```";
     }
 }
