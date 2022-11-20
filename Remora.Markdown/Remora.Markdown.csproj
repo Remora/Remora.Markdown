@@ -1,10 +1,9 @@
-<Project Sdk="Remora.Sdk/1.0.0">
+<Project Sdk="Remora.Sdk/2.0.1">
     <PropertyGroup>
-        <VersionPrefix>1.1.1</VersionPrefix>
+        <VersionPrefix>1.1.2</VersionPrefix>
         <Description>A typesafe, graph-oriented library for generating Markdown documents in C#.</Description>
         <PackageReleaseNotes>
-            Update dependencies.
-            Remove redundant attributes.
+            Upgrade Remora.Sdk.
         </PackageReleaseNotes>
         <PackageTags>remora;markdown;graph;typesafe</PackageTags>
     </PropertyGroup>
